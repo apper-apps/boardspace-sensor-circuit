@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "ownerId": "current-user-id",
+    "title": "Marketing Analytics Dashboard",
+    "isPublic": false,
+    "thumbnailUrl": null,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2024-01-20T14:30:00.000Z"
+  },
+  {
+    "Id": 2,
+    "ownerId": "current-user-id",
+    "title": "Sales Performance Board",
+    "isPublic": true,
+    "thumbnailUrl": null,
+    "createdAt": "2024-01-18T09:15:00.000Z",
+    "updatedAt": "2024-01-22T11:45:00.000Z"
+  },
+  {
+    "Id": 3,
+    "ownerId": "current-user-id",
+    "title": "Product Roadmap",
+    "isPublic": false,
+    "thumbnailUrl": null,
+    "createdAt": "2024-01-20T16:20:00.000Z",
+    "updatedAt": "2024-01-23T09:10:00.000Z"
+  },
+  {
+    "Id": 4,
+    "ownerId": "current-user-id",
+    "title": "Team Resources Hub",
+    "isPublic": true,
+    "thumbnailUrl": null,
+    "createdAt": "2024-01-22T11:30:00.000Z",
+    "updatedAt": "2024-01-25T13:20:00.000Z"
+  },
+  {
+    "Id": 5,
+    "ownerId": "current-user-id",
+    "title": "Client Presentation Board",
+    "isPublic": false,
+    "thumbnailUrl": null,
+    "createdAt": "2024-01-25T08:45:00.000Z",
+    "updatedAt": "2024-01-26T15:55:00.000Z"
+  }
+]

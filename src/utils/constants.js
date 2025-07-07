@@ -1,0 +1,35 @@
+export const DASHBOARD_ROLES = {
+  OWNER: 'owner',
+  EDITOR: 'editor',
+  VIEWER: 'viewer'
+}
+
+export const EMBED_BLOCK_DEFAULTS = {
+  WIDTH: 400,
+  HEIGHT: 300,
+  MIN_WIDTH: 200,
+  MIN_HEIGHT: 150,
+  POSITION_X: 100,
+  POSITION_Y: 100
+}
+
+export const CANVAS_SETTINGS = {
+  MIN_WIDTH: 2000,
+  MIN_HEIGHT: 1500,
+  GRID_SIZE: 20,
+  SNAP_THRESHOLD: 10
+}
+
+export const DEBOUNCE_DELAYS = {
+  SEARCH: 300,
+  AUTOSAVE: 1000,
+  RESIZE: 100
+}
+
+export const TOAST_SETTINGS = {
+  POSITION: 'top-right',
+  AUTO_CLOSE: 3000,
+  HIDE_PROGRESS_BAR: false,
+  CLOSE_ON_CLICK: true,
+  PAUSE_ON_HOVER: true
+}

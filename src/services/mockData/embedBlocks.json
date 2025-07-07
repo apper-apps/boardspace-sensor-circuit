@@ -1,0 +1,86 @@
+[
+  {
+    "Id": 1,
+    "dashboardId": 1,
+    "embedUrl": "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit#gid=0",
+    "title": "Monthly Revenue Tracker",
+    "posX": 50,
+    "posY": 50,
+    "width": 600,
+    "height": 400,
+    "zIndex": 1,
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "Id": 2,
+    "dashboardId": 1,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "title": "Marketing Campaign Video",
+    "posX": 700,
+    "posY": 50,
+    "width": 500,
+    "height": 350,
+    "zIndex": 2,
+    "createdAt": "2024-01-15T11:00:00.000Z"
+  },
+  {
+    "Id": 3,
+    "dashboardId": 2,
+    "embedUrl": "https://airtable.com/embed/shrUJ3t7KLMqVVSI7?backgroundColor=blue&viewControls=on",
+    "title": "Sales Pipeline",
+    "posX": 100,
+    "posY": 100,
+    "width": 800,
+    "height": 500,
+    "zIndex": 1,
+    "createdAt": "2024-01-18T09:45:00.000Z"
+  },
+  {
+    "Id": 4,
+    "dashboardId": 2,
+    "embedUrl": "https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FLKQ4FJ4bTnCSjedbRpk931%2FSample-File",
+    "title": "Sales Mockups",
+    "posX": 950,
+    "posY": 100,
+    "width": 450,
+    "height": 600,
+    "zIndex": 2,
+    "createdAt": "2024-01-18T10:15:00.000Z"
+  },
+  {
+    "Id": 5,
+    "dashboardId": 3,
+    "embedUrl": "https://trello.com/b/example/roadmap.json",
+    "title": "Product Roadmap Board",
+    "posX": 75,
+    "posY": 75,
+    "width": 1000,
+    "height": 600,
+    "zIndex": 1,
+    "createdAt": "2024-01-20T16:45:00.000Z"
+  },
+  {
+    "Id": 6,
+    "dashboardId": 4,
+    "embedUrl": "https://calendly.com/embed/example",
+    "title": "Team Meeting Scheduler",
+    "posX": 200,
+    "posY": 150,
+    "width": 400,
+    "height": 500,
+    "zIndex": 1,
+    "createdAt": "2024-01-22T12:00:00.000Z"
+  },
+  {
+    "Id": 7,
+    "dashboardId": 4,
+    "embedUrl": "https://www.notion.so/embed/example",
+    "title": "Team Wiki",
+    "posX": 650,
+    "posY": 150,
+    "width": 600,
+    "height": 500,
+    "zIndex": 2,
+    "createdAt": "2024-01-22T12:30:00.000Z"
+  }
+]
