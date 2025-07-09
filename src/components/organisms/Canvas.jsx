@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
-import EmbedBlock from '@/components/molecules/EmbedBlock'
-import { cn } from '@/utils/cn'
-
+import React, { useEffect, useRef, useState } from "react";
+import { cn } from "@/utils/cn";
+import EmbedBlock from "@/components/molecules/EmbedBlock";
+import ElementBlock from "@/components/molecules/ElementBlock";
 const Canvas = ({ 
   blocks, 
   onBlockMove, 
@@ -63,8 +63,8 @@ const Canvas = ({
         onClick={handleCanvasClick}
         style={{ minWidth: '2000px', minHeight: '1500px' }}
       >
-        {blocks.map((block) => (
-          <EmbedBlock
+{blocks.map((block) => (
+          <ElementBlock
             key={block.Id}
             block={block}
             isSelected={selectedBlockId === block.Id}
