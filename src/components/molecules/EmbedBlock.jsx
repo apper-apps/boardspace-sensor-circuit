@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import ApperIcon from '@/components/ApperIcon'
-import { cn } from '@/utils/cn'
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import EditEmbedModal from "@/components/molecules/EditEmbedModal";
+import { cn } from "@/utils/cn";
+import ApperIcon from "@/components/ApperIcon";
 
 const EmbedBlock = ({ 
   block, 
@@ -10,15 +11,16 @@ const EmbedBlock = ({
   onMove, 
   onResize, 
   onDelete,
+  onEdit,
   isViewOnly = false,
   className 
 }) => {
-  const [isDragging, setIsDragging] = useState(false)
+const [isDragging, setIsDragging] = useState(false)
   const [isResizing, setIsResizing] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 })
   const blockRef = useRef(null)
-
   const handleMouseDown = (e) => {
     if (isViewOnly) return
     
@@ -98,12 +100,28 @@ const EmbedBlock = ({
     }
   }, [isDragging, isResizing, dragStart, resizeStart])
 
-  const handleDelete = (e) => {
+const handleDelete = (e) => {
     e.preventDefault()
     e.stopPropagation()
     onDelete(block.Id)
   }
 
+  const handleEdit = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsEditing(true)
+  }
+
+  const handleEditSave = async (editData) => {
+    if (onEdit) {
+      await onEdit(block.Id, editData)
+    }
+    setIsEditing(false)
+  }
+
+  const handleEditClose = () => {
+    setIsEditing(false)
+  }
   return (
     <motion.div
       ref={blockRef}
@@ -139,16 +157,23 @@ const EmbedBlock = ({
         </div>
       )}
 
-      {/* Delete Button */}
+{/* Action Buttons */}
       {!isViewOnly && isSelected && (
-        <button
-          onClick={handleDelete}
-          className="absolute top-2 right-2 w-6 h-6 bg-error text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
-        >
-          <ApperIcon name="X" className="h-3 w-3" />
-        </button>
+        <div className="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+          <button
+            onClick={handleEdit}
+            className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors"
+          >
+            <ApperIcon name="Edit" className="h-3 w-3" />
+          </button>
+          <button
+            onClick={handleDelete}
+            className="w-6 h-6 bg-error text-white rounded-full flex items-center justify-center hover:bg-error/80 transition-colors"
+          >
+            <ApperIcon name="X" className="h-3 w-3" />
+          </button>
+        </div>
       )}
-
       {/* Content */}
       <div className="w-full h-full p-3">
         {block.title && (
@@ -195,6 +220,16 @@ const EmbedBlock = ({
             onMouseDown={(e) => handleResizeStart(e, 'se')}
           />
         </>
+)}
+
+      {/* Edit Modal */}
+      {isEditing && (
+        <EditEmbedModal
+          isOpen={isEditing}
+          onClose={handleEditClose}
+          onSave={handleEditSave}
+          embedBlock={block}
+        />
       )}
     </motion.div>
   )

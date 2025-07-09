@@ -1,50 +1,58 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { toast } from 'react-toastify'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Label from '@/components/atoms/Label'
-import ApperIcon from '@/components/ApperIcon'
-import { cn } from '@/utils/cn'
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { cn } from "@/utils/cn";
+import ApperIcon from "@/components/ApperIcon";
+import Label from "@/components/atoms/Label";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 
-const AddEmbedModal = ({ 
+const EditEmbedModal = ({ 
   isOpen, 
   onClose, 
-  onAdd,
+  onSave,
+  embedBlock,
   className 
 }) => {
-  const [embedUrl, setEmbedUrl] = useState('')
-  const [title, setTitle] = useState('')
-  const [isAdding, setIsAdding] = useState(false)
+  const [embedUrl, setEmbedUrl] = useState(embedBlock?.embedUrl || '')
+  const [title, setTitle] = useState(embedBlock?.title || '')
+  const [isSaving, setIsSaving] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!embedUrl.trim()) return
 
-    setIsAdding(true)
+    setIsSaving(true)
     try {
-      await onAdd({
+      await onSave({
         embedUrl: embedUrl.trim(),
         title: title.trim() || 'Untitled Embed'
       })
-      toast.success('Embed added successfully')
-      setEmbedUrl('')
-      setTitle('')
+      toast.success('Embed updated successfully')
       onClose()
     } catch (error) {
-      toast.error('Failed to add embed')
+      toast.error('Failed to update embed')
     } finally {
-      setIsAdding(false)
+      setIsSaving(false)
     }
   }
 
   const handleClose = () => {
-    setEmbedUrl('')
-    setTitle('')
+    // Reset to original values
+    setEmbedUrl(embedBlock?.embedUrl || '')
+    setTitle(embedBlock?.title || '')
     onClose()
   }
 
-  if (!isOpen) return null
+  // Update form values when embedBlock changes
+  React.useEffect(() => {
+    if (embedBlock) {
+      setEmbedUrl(embedBlock.embedUrl || '')
+      setTitle(embedBlock.title || '')
+    }
+  }, [embedBlock])
+
+  if (!isOpen || !embedBlock) return null
 
   return (
     <AnimatePresence>
@@ -60,10 +68,10 @@ const AddEmbedModal = ({
           )}
         >
           {/* Header */}
-<div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900">
-                Add Embed
+                Edit Embed
               </h2>
               <Button
                 variant="ghost"
@@ -111,9 +119,9 @@ const AddEmbedModal = ({
               </Button>
               <Button
                 type="submit"
-                disabled={!embedUrl.trim() || isAdding}
+                disabled={!embedUrl.trim() || isSaving}
               >
-                {isAdding ? 'Adding...' : 'Add Embed'}
+                {isSaving ? 'Saving...' : 'Save Changes'}
               </Button>
             </div>
           </form>
@@ -123,4 +131,4 @@ const AddEmbedModal = ({
   )
 }
 
-export default AddEmbedModal
+export default EditEmbedModal
