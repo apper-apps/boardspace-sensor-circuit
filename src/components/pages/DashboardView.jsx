@@ -71,7 +71,7 @@ const DashboardView = () => {
                 Back
               </Button>
               
-              <h1 className="text-xl font-semibold text-gray-900">
+<h1 className="text-xl font-semibold text-gray-900">
                 {dashboard?.title || 'Dashboard'}
               </h1>
             </div>

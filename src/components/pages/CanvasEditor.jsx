@@ -25,7 +25,7 @@ const CanvasEditor = () => {
       
       if (id === 'new') {
         // Create new dashboard
-        const newDashboard = await dashboardService.create({
+const newDashboard = await dashboardService.create({
           title: 'Untitled Dashboard',
           isPublic: false
         })
@@ -72,7 +72,7 @@ const CanvasEditor = () => {
 
   const handleAddEmbed = async (embedData) => {
     try {
-      const newBlock = await embedBlockService.create({
+const newBlock = await embedBlockService.create({
         dashboardId: parseInt(id),
         embedUrl: embedData.embedUrl,
         title: embedData.title,
@@ -89,9 +89,9 @@ const CanvasEditor = () => {
     }
   }
 
-  const handleBlockMove = (blockId, x, y) => {
+const handleBlockMove = (blockId, x, y) => {
     setBlocks(blocks.map(block => 
-      block.Id === blockId ? { ...block, posX: x, posY: y } : block
+      block.Id === blockId ? { ...block, pos_x: x, pos_y: y } : block
     ))
     debouncedSave(blockId, { posX: x, posY: y })
   }
@@ -115,8 +115,8 @@ const CanvasEditor = () => {
 
   const handleUpdatePublic = async (dashboardId, isPublic) => {
     try {
-      await dashboardService.update(dashboardId, { isPublic })
-      setDashboard({ ...dashboard, isPublic })
+await dashboardService.update(dashboardId, { isPublic })
+      setDashboard({ ...dashboard, is_public: isPublic })
     } catch (error) {
       throw new Error('Failed to update dashboard visibility')
     }

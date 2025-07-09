@@ -35,7 +35,7 @@ const DashboardList = () => {
     loadDashboards()
   }, [])
 
-  const handleSearch = (searchTerm) => {
+const handleSearch = (searchTerm) => {
     const filtered = dashboards.filter(dashboard =>
       dashboard.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -44,7 +44,7 @@ const DashboardList = () => {
 
   const handleCreateDashboard = async () => {
     try {
-      const newDashboard = await dashboardService.create({
+const newDashboard = await dashboardService.create({
         title: 'Untitled Dashboard',
         isPublic: false
       })
@@ -56,7 +56,7 @@ const DashboardList = () => {
 
   const handleDuplicate = async (dashboard) => {
     try {
-      const duplicatedDashboard = await dashboardService.create({
+const duplicatedDashboard = await dashboardService.create({
         title: `${dashboard.title} (Copy)`,
         isPublic: false
       })
