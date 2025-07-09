@@ -5,6 +5,42 @@ class EmbedBlockService {
     this.embedBlocks = [...mockEmbedBlocks]
   }
 
+  async validateEmbedUrl(url) {
+    if (!url) return false
+    
+    try {
+      // Basic URL validation
+      new URL(url)
+      
+      // Check for common embed patterns
+      const embedPatterns = [
+        /youtube\.com\/embed\//,
+        /youtu\.be\//,
+        /vimeo\.com\/video\//,
+        /loom\.com\/embed\//,
+        /figma\.com\/embed/,
+        /miro\.com\/app\/embed/,
+        /typeform\.com\/to\//,
+        /airtable\.com\/embed/,
+        /docs\.google\.com\/presentation/,
+        /codepen\.io\/.*\/embed/
+      ]
+      
+      const isKnownEmbed = embedPatterns.some(pattern => pattern.test(url))
+      
+      return {
+        isValid: true,
+        isKnownEmbed,
+        url
+      }
+    } catch (error) {
+      return {
+        isValid: false,
+        error: 'Invalid URL format'
+      }
+    }
+  }
+
   async getAll() {
     await new Promise(resolve => setTimeout(resolve, 200))
     return [...this.embedBlocks]
@@ -24,8 +60,17 @@ class EmbedBlockService {
     return this.embedBlocks.filter(block => block.dashboardId === dashboardId)
   }
 
-  async create(data) {
+async create(data) {
     await new Promise(resolve => setTimeout(resolve, 400))
+    
+    // Validate embed URL if provided
+    if (data.embedUrl) {
+      const validation = await this.validateEmbedUrl(data.embedUrl)
+      if (!validation.isValid) {
+        throw new Error(validation.error || 'Invalid embed URL')
+      }
+    }
+    
     const newBlock = {
       Id: Math.max(...this.embedBlocks.map(b => b.Id), 0) + 1,
       dashboardId: data.dashboardId,
@@ -42,12 +87,21 @@ class EmbedBlockService {
     return { ...newBlock }
   }
 
-  async update(id, data) {
+async update(id, data) {
     await new Promise(resolve => setTimeout(resolve, 200))
     const index = this.embedBlocks.findIndex(b => b.Id === id)
     if (index === -1) {
       throw new Error('Embed block not found')
     }
+    
+    // Validate embed URL if being updated
+    if (data.embedUrl && data.embedUrl !== this.embedBlocks[index].embedUrl) {
+      const validation = await this.validateEmbedUrl(data.embedUrl)
+      if (!validation.isValid) {
+        throw new Error(validation.error || 'Invalid embed URL')
+      }
+    }
+    
     this.embedBlocks[index] = {
       ...this.embedBlocks[index],
       ...data

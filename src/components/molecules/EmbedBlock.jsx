@@ -18,6 +18,8 @@ const EmbedBlock = ({
 const [isDragging, setIsDragging] = useState(false)
   const [isResizing, setIsResizing] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [isIframeLoading, setIsIframeLoading] = useState(true)
+  const [iframeError, setIframeError] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 })
   const blockRef = useRef(null)
@@ -119,9 +121,41 @@ const handleDelete = (e) => {
     setIsEditing(false)
   }
 
-  const handleEditClose = () => {
+const handleEditClose = () => {
     setIsEditing(false)
   }
+
+  const handleIframeLoad = () => {
+    setIsIframeLoading(false)
+    setIframeError(false)
+  }
+
+  const handleIframeError = () => {
+    setIsIframeLoading(false)
+    setIframeError(true)
+  }
+
+  const handleRetryEmbed = () => {
+    setIsIframeLoading(true)
+    setIframeError(false)
+    // Force iframe reload by updating src
+    const iframe = blockRef.current?.querySelector('iframe')
+    if (iframe) {
+      const currentSrc = iframe.src
+      iframe.src = ''
+      setTimeout(() => {
+        iframe.src = currentSrc
+      }, 100)
+    }
+  }
+
+  // Reset iframe states when embed URL changes
+  useEffect(() => {
+    if (block.embedUrl) {
+      setIsIframeLoading(true)
+      setIframeError(false)
+    }
+  }, [block.embedUrl])
   return (
     <motion.div
       ref={blockRef}
@@ -181,16 +215,52 @@ const handleDelete = (e) => {
             {block.title}
           </h4>
         )}
-        
-        <div className="w-full h-full bg-gray-50 rounded border-2 border-dashed border-gray-200 flex items-center justify-center">
+<div className="w-full h-full bg-gray-50 rounded border-2 border-dashed border-gray-200 flex items-center justify-center relative">
           {block.embedUrl ? (
-            <iframe
-              src={block.embedUrl}
-              className="w-full h-full rounded"
-              frameBorder="0"
-              allowFullScreen
-              title={block.title || 'Embedded content'}
-            />
+            <>
+              {isIframeLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-50 rounded">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                    <p className="text-sm text-gray-500">Loading embed...</p>
+                  </div>
+                </div>
+              )}
+              
+              {iframeError ? (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <div className="w-12 h-12 bg-error/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <ApperIcon name="AlertCircle" className="h-6 w-6 text-error" />
+                    </div>
+                    <h4 className="text-sm font-medium text-gray-900 mb-2">
+                      Failed to load embed
+                    </h4>
+                    <p className="text-xs text-gray-500 mb-3">
+                      The content couldn't be loaded. This might be due to network issues or the service blocking the connection.
+                    </p>
+                    <button
+                      onClick={handleRetryEmbed}
+                      className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-md hover:bg-primary/20 transition-colors"
+                    >
+                      <ApperIcon name="RefreshCw" className="h-3 w-3 mr-1" />
+                      Retry
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <iframe
+                  src={block.embedUrl}
+                  className="w-full h-full rounded"
+                  frameBorder="0"
+                  allowFullScreen
+                  title={block.title || 'Embedded content'}
+                  onLoad={handleIframeLoad}
+                  onError={handleIframeError}
+                  style={{ display: isIframeLoading ? 'none' : 'block' }}
+                />
+              )}
+            </>
           ) : (
             <div className="text-center">
               <ApperIcon name="Globe" className="h-8 w-8 text-gray-400 mx-auto mb-2" />
