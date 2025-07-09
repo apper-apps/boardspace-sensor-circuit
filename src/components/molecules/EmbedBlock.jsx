@@ -227,33 +227,44 @@ const handleEditClose = () => {
                 </div>
               )}
               
-              {iframeError ? (
+{iframeError ? (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center p-4">
                     <div className="w-12 h-12 bg-error/10 rounded-full flex items-center justify-center mx-auto mb-3">
                       <ApperIcon name="AlertCircle" className="h-6 w-6 text-error" />
                     </div>
                     <h4 className="text-sm font-medium text-gray-900 mb-2">
-                      Failed to load embed
+                      Content cannot be embedded
                     </h4>
                     <p className="text-xs text-gray-500 mb-3">
-                      The content couldn't be loaded. This might be due to network issues or the service blocking the connection.
+                      This service blocks embedding for security. You can still access the content directly.
                     </p>
-                    <button
-                      onClick={handleRetryEmbed}
-                      className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-md hover:bg-primary/20 transition-colors"
-                    >
-                      <ApperIcon name="RefreshCw" className="h-3 w-3 mr-1" />
-                      Retry
-                    </button>
+                    <div className="flex flex-col gap-2">
+                      <button
+                        onClick={() => window.open(block.embedUrl, '_blank', 'noopener,noreferrer')}
+                        className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-md hover:bg-primary/20 transition-colors"
+                      >
+                        <ApperIcon name="ExternalLink" className="h-3 w-3 mr-1" />
+                        Open in New Tab
+                      </button>
+                      <button
+                        onClick={handleRetryEmbed}
+                        className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                      >
+                        <ApperIcon name="RefreshCw" className="h-3 w-3 mr-1" />
+                        Retry Embed
+                      </button>
+                    </div>
                   </div>
                 </div>
-              ) : (
+) : (
                 <iframe
                   src={block.embedUrl}
                   className="w-full h-full rounded"
                   frameBorder="0"
                   allowFullScreen
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   title={block.title || 'Embedded content'}
                   onLoad={handleIframeLoad}
                   onError={handleIframeError}
