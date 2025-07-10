@@ -40,11 +40,11 @@ const DashboardCard = ({
       )}
       onClick={handleCardClick}
     >
-      {/* Thumbnail */}
+{/* Thumbnail */}
       <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg mb-4 flex items-center justify-center">
-        {dashboard.thumbnailUrl ? (
+        {dashboard.thumbnail_url ? (
           <img 
-            src={dashboard.thumbnailUrl} 
+            src={dashboard.thumbnail_url} 
             alt={dashboard.title}
             className="w-full h-full object-cover rounded-lg"
           />
@@ -99,15 +99,15 @@ const DashboardCard = ({
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Badge variant={dashboard.isPublic ? 'success' : 'default'}>
-            {dashboard.isPublic ? 'Public' : 'Private'}
+          <Badge variant={dashboard.is_public ? 'success' : 'default'}>
+            {dashboard.is_public ? 'Public' : 'Private'}
           </Badge>
           <Badge variant="owner">Owner</Badge>
         </div>
         <span className="text-sm text-gray-500">
-          {format(new Date(dashboard.updatedAt), 'MMM d, yyyy')}
+          {dashboard.updated_at ? format(new Date(dashboard.updated_at), 'MMM d, yyyy') : 'No date'}
         </span>
       </div>
 
