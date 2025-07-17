@@ -180,10 +180,10 @@ class EmbedBlockService {
     }
   }
 
-  async create(data) {
+async create(data) {
     try {
-      // Validate embed URL if provided
-      if (data.embedUrl) {
+      // Validate embed URL if provided and element type requires URL validation
+      if (data.embedUrl && ['embed', 'iframe'].includes(data.elementType)) {
         const validation = await this.validateEmbedUrl(data.embedUrl)
         if (!validation.isValid) {
           toast.error(validation.error || 'Invalid embed URL')
@@ -207,7 +207,6 @@ class EmbedBlockService {
           }
         ]
       }
-      
       const response = await client.createRecord(this.tableName, params)
       
       if (!response.success) {
@@ -231,16 +230,17 @@ class EmbedBlockService {
           })
         }
         
-        if (successfulRecords.length > 0) {
-          toast.success('Embed block created successfully')
+if (successfulRecords.length > 0) {
+          const elementType = data.elementType || 'embed'
+          toast.success(`${elementType.charAt(0).toUpperCase() + elementType.slice(1)} element created successfully`)
           return successfulRecords[0].data
         }
       }
       
       return null
-    } catch (error) {
-      console.error("Error creating embed block:", error)
-      toast.error("Failed to create embed block")
+} catch (error) {
+      console.error("Error creating element block:", error)
+      toast.error("Failed to create element")
       return null
     }
   }

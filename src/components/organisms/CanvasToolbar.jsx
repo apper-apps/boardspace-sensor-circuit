@@ -2,13 +2,12 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '@/components/atoms/Button'
 import ApperIcon from '@/components/ApperIcon'
-import AddEmbedModal from '@/components/molecules/AddEmbedModal'
+import AddElementModal from '@/components/molecules/AddElementModal'
 import ShareModal from '@/components/molecules/ShareModal'
 import { cn } from '@/utils/cn'
-
 const CanvasToolbar = ({ 
   dashboard, 
-  onAddEmbed, 
+  onAddElement, 
   onUpdatePublic, 
   onInviteUser, 
   onRemoveCollaborator,
@@ -18,13 +17,13 @@ const CanvasToolbar = ({
   className 
 }) => {
   const navigate = useNavigate()
-  const [showAddEmbed, setShowAddEmbed] = useState(false)
+  const [showAddElement, setShowAddElement] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
   const [showGrid, setShowGrid] = useState(false)
 
-  const handleAddEmbed = async (embedData) => {
-    await onAddEmbed(embedData)
-    setShowAddEmbed(false)
+  const handleAddElement = async (elementData) => {
+    await onAddElement(elementData)
+    setShowAddElement(false)
   }
 
   return (
@@ -72,13 +71,13 @@ const CanvasToolbar = ({
                     Grid
                   </Button>
                   
-                  <Button
+<Button
                     variant="primary"
                     size="sm"
-                    onClick={() => setShowAddEmbed(true)}
+                    onClick={() => setShowAddElement(true)}
                   >
                     <ApperIcon name="Plus" className="h-4 w-4 mr-2" />
-                    Add Embed
+                    Add Element
                   </Button>
                 </>
               )}
@@ -101,10 +100,10 @@ const CanvasToolbar = ({
       </div>
 
       {/* Modals */}
-      <AddEmbedModal
-        isOpen={showAddEmbed}
-        onClose={() => setShowAddEmbed(false)}
-        onAdd={handleAddEmbed}
+<AddElementModal
+        isOpen={showAddElement}
+        onClose={() => setShowAddElement(false)}
+        onAdd={handleAddElement}
       />
       
       <ShareModal

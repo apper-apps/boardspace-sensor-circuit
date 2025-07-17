@@ -70,22 +70,47 @@ const newDashboard = await dashboardService.create({
     loadDashboard()
   }, [id])
 
-  const handleAddEmbed = async (embedData) => {
+const handleAddElement = async (elementData) => {
     try {
-const newBlock = await embedBlockService.create({
+      // Map element data based on element type
+      const blockData = {
         dashboardId: parseInt(id),
-        embedUrl: embedData.embedUrl,
-        title: embedData.title,
+        title: elementData.title,
         posX: 100,
         posY: 100,
         width: 400,
         height: 300,
-        zIndex: blocks.length + 1
-      })
+        zIndex: blocks.length + 1,
+        elementType: elementData.elementType
+      }
+
+      // Map different element types to appropriate fields
+      switch (elementData.elementType) {
+        case 'embed':
+        case 'iframe':
+          blockData.embedUrl = elementData.embedUrl
+          break
+        case 'link':
+          blockData.embedUrl = elementData.linkUrl
+          break
+        case 'image':
+          blockData.embedUrl = elementData.imageUrl
+          break
+        case 'file':
+          blockData.embedUrl = elementData.fileUrl
+          break
+        case 'text':
+          blockData.embedUrl = elementData.content // Store text content in embed_url field
+          break
+        default:
+          blockData.embedUrl = elementData.embedUrl
+      }
+
+      const newBlock = await embedBlockService.create(blockData)
       setBlocks([...blocks, newBlock])
-      toast.success('Embed added successfully')
+      toast.success('Element added successfully')
     } catch (error) {
-      toast.error('Failed to add embed')
+      toast.error('Failed to add element')
     }
   }
 
@@ -152,9 +177,9 @@ await dashboardService.update(dashboardId, { isPublic })
 
   return (
     <div className="h-screen flex flex-col">
-      <CanvasToolbar
+<CanvasToolbar
         dashboard={dashboard}
-        onAddEmbed={handleAddEmbed}
+        onAddElement={handleAddElement}
         onUpdatePublic={handleUpdatePublic}
         onInviteUser={handleInviteUser}
         onRemoveCollaborator={handleRemoveCollaborator}
